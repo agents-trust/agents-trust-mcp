@@ -77,7 +77,7 @@ export class AgentsTrustApi {
     try { response = await this.send(url.href); }
     catch { throw new Error('Agents Trust request failed.'); }
     if (response.status === 402 && paid) {
-      if (this.settings.enablePayments !== true) throw new Error('Payments disabled. The wallet owner must configure AGENTS_TRUST_ENABLE_PAYMENTS=true for one authorization per process' + (this.settings.walletKey ? '.' : ' and supply AGENTS_TRUST_WALLET_PRIVATE_KEY.'));
+      if (this.settings.enablePayments !== true) throw new Error('Payments disabled. The wallet owner must configure AGENTS_TRUST_ENABLE_PAYMENTS=true for one authorization per process' + (this.settings.walletKey ? '.' : ' and supply AGENTS_TRUST_WALLET_PRIVATE_KEY.') + (path === '/recommend' ? ' Free without payment: need exactly "weather", "crypto prices" or "web search".' : ''));
       if (this.authorizationUsed) throw new Error('Payment authorization already used in this process. Check your wallet and receipt before granting another process permission.');
       if (!this.settings.walletKey) throw new Error('Set AGENTS_TRUST_WALLET_PRIVATE_KEY to pay with Base USDC.');
       try {

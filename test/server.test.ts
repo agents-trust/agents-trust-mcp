@@ -26,6 +26,7 @@ it('does not let model arguments turn a configured wallet into a payment grant',
       } });
       expect(result.isError).toBe(true);
       expect(JSON.stringify(result)).toContain('Payments disabled');
+      expect(JSON.stringify(result)).toContain('Free without payment: need exactly');
     }
     expect(request).toHaveBeenCalledTimes(3);
     expect(request.mock.calls.every(([url, init]) => String(url).startsWith('https://api.agents-trust.com/recommend?') && !init?.headers)).toBe(true);

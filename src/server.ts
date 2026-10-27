@@ -7,7 +7,7 @@ const PAYMENT = 'Pays only if the wallet owner set AGENTS_TRUST_ENABLE_PAYMENTS=
 
 export function createServer(settings: Settings = {}, request: typeof fetch = fetch) {
   const api = new AgentsTrustApi(settings, request);
-  const server = new McpServer({ name: 'agents-trust', version: '0.1.3' });
+  const server = new McpServer({ name: 'agents-trust', version: '0.1.4' });
   const run = async (action: () => Promise<unknown>) => {
     try {
       let text = JSON.stringify(await action());
@@ -25,7 +25,7 @@ export function createServer(settings: Settings = {}, request: typeof fetch = fe
       'Find which paid x402 API to call for a task described in plain words, ranked with evidence. Each pick has the endpoint URL, provider price and payment network, a ready request template, liveness, delivery evidence and risk flags.',
       'Use it when you do not yet know which API to call; use inspect instead when you already have one exact endpoint URL, and receipt to confirm settlement after paying.',
       'Write need as the task itself ("current weather in Paris"), not a product name; narrow with max_price_usd or chain, and use view=compact to save tokens.',
-      'Weather, crypto prices and web search are free demo needs; other needs cost 0.01 USDC.',
+      'Free demo: need exactly "weather", "crypto prices" or "web search" (any case); every other need, including longer weather phrasings, costs 0.01 USDC.',
       PAYMENT, RESULT, 'data.picks may be shorter than limit, or empty, when evidence is insufficient.',
     ].join(' '),
     inputSchema: {

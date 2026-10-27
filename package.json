@@ -1,6 +1,6 @@
 {
   "name": "@agents-trust/mcp",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Find APIs, inspect endpoint evidence and look up payment receipts with Agents Trust.",
   "scripts": {
     "build": "node scripts/build.mjs",

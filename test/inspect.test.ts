@@ -43,7 +43,9 @@ describe('Inspect through the existing payment client', () => {
 
   it('requires owner opt-in for Inspect even with a configured wallet', async () => {
     const request = vi.fn<typeof fetch>().mockResolvedValue(challenge());
-    await expect(new AgentsTrustApi({ walletKey: generatePrivateKey() }, request).inspect(params)).rejects.toThrow('Payments disabled');
+    const error = await new AgentsTrustApi({ walletKey: generatePrivateKey() }, request).inspect(params).catch((e: unknown) => e);
+    expect(String(error)).toContain('Payments disabled');
+    expect(String(error)).not.toContain('Free without payment');
     expect(request).toHaveBeenCalledTimes(1);
     expect(request.mock.calls[0]![1]?.headers).toBeUndefined();
   });
