@@ -2,12 +2,12 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
 import { AgentsTrustApi, type Settings } from './api.js';
 
-const RESULT = 'Returns JSON {data, payment_attempt_id, request_id}; payment_attempt_id is set only after a paid answer.';
-const PAYMENT = 'Paying needs the wallet owner to set AGENTS_TRUST_ENABLE_PAYMENTS=true and AGENTS_TRUST_WALLET_PRIVATE_KEY (Base USDC); one paid call per process, capped by AGENTS_TRUST_MAX_CALL_USDC (default 0.01). Otherwise it returns an error and sends nothing. Errors and empty results are free; paid calls are never retried.';
+const RESULT = 'Returns JSON {data, payment_attempt_id, request_id}; payment_attempt_id is set only after a paid answer, for use with receipt.';
+const PAYMENT = 'Pays only if the wallet owner set AGENTS_TRUST_ENABLE_PAYMENTS=true and AGENTS_TRUST_WALLET_PRIVATE_KEY (Base USDC): one paid call per process, at most AGENTS_TRUST_MAX_CALL_USDC (default 0.01), never retried. Otherwise it errors without paying; errors and empty results are free.';
 
 export function createServer(settings: Settings = {}, request: typeof fetch = fetch) {
   const api = new AgentsTrustApi(settings, request);
-  const server = new McpServer({ name: 'agents-trust', version: '0.1.2' });
+  const server = new McpServer({ name: 'agents-trust', version: '0.1.3' });
   const run = async (action: () => Promise<unknown>) => {
     try {
       let text = JSON.stringify(await action());
@@ -24,9 +24,9 @@ export function createServer(settings: Settings = {}, request: typeof fetch = fe
     description: [
       'Find which paid x402 API to call for a task described in plain words, ranked with evidence. Each pick has the endpoint URL, provider price and payment network, a ready request template, liveness, delivery evidence and risk flags.',
       'Use it when you do not yet know which API to call; use inspect instead when you already have one exact endpoint URL, and receipt to confirm settlement after paying.',
+      'Write need as the task itself ("current weather in Paris"), not a product name; narrow with max_price_usd or chain, and use view=compact to save tokens.',
       'Weather, crypto prices and web search are free demo needs; other needs cost 0.01 USDC.',
-      PAYMENT, RESULT,
-      'Returns fewer picks, or none, when evidence is insufficient.',
+      PAYMENT, RESULT, 'data.picks may be shorter than limit, or empty, when evidence is insufficient.',
     ].join(' '),
     inputSchema: {
       need: z.string().refine(s => Array.from(s).length >= 2 && Array.from(s).length <= 300 && /[\p{L}\p{N}].*[\p{L}\p{N}]/u.test(s), 'Use 2–300 characters with at least two letters or digits.')
@@ -44,8 +44,10 @@ export function createServer(settings: Settings = {}, request: typeof fetch = fe
     description: [
       'Read the stored evidence for one exact x402 endpoint URL: price, payment networks, liveness, delivery history and risk flags. It never calls or pays the endpoint itself.',
       'Use it before paying an endpoint you already know, for example one returned by recommend; use recommend instead to find candidates for a task.',
+      'Pass url exactly as listed: paths and trailing slashes are distinct. Use view=compact for essentials only.',
       'Demo endpoints are free; other indexed endpoints cost 1% of the endpoint\'s lowest quoted price, minimum 0.001 USDC. An unindexed URL returns ENDPOINT_NOT_INDEXED without payment.',
       PAYMENT, RESULT,
+      'data.endpoint holds price (min_usd, max_usd), networks and payment_offers, liveness (is_live, last probe time; compact and evidence views), delivery_verification (status, charged and charged-not-delivered counts), risk_flags and invocation (request schema); data.lookup shows the canonical URL matched.',
     ].join(' '),
     inputSchema: {
       url: z.string().min(1).max(2048).refine(value => {

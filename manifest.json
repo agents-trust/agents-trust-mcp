@@ -2,7 +2,7 @@
   "manifest_version": "0.3",
   "name": "agents-trust",
   "display_name": "Agents Trust",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Find APIs for your task and inspect endpoint evidence.",
   "author": {
     "name": "Agents Trust",
