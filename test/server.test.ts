@@ -42,6 +42,13 @@ it('publishes the four tool schemas and rejects invalid arguments without HTTP',
     const { tools } = await client.listTools();
     expect(tools.map(t => t.name)).toEqual(['recommend','inspect','receipt','health']);
     expect(tools[0]!.inputSchema.required).toContain('need');
+    for (const tool of tools) {
+      expect(tool.title).toBeTruthy();
+      expect(tool.description!.length).toBeGreaterThan(80);
+      for (const [name, schema] of Object.entries(tool.inputSchema.properties ?? {})) {
+        expect((schema as { description?: string }).description, `${tool.name}.${name}`).toBeTruthy();
+      }
+    }
     for (const args of [{ need: '' }, { need: 'aa', limit: 6 }, { need: 'aa', live: 0 }, { need: 'aa', chain: 'base' }]) {
       expect((await client.callTool({ name: 'recommend', arguments: args })).isError).toBe(true);
     }
