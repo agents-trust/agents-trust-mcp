@@ -4,7 +4,7 @@ import { AgentsTrustApi, type Settings } from './api.js';
 
 export function createServer(settings: Settings = {}, request: typeof fetch = fetch) {
   const api = new AgentsTrustApi(settings, request);
-  const server = new McpServer({ name: 'agents-trust', version: '0.1.0' });
+  const server = new McpServer({ name: 'agents-trust', version: '0.1.1' });
   const run = async (action: () => Promise<unknown>) => {
     try {
       let text = JSON.stringify(await action());
