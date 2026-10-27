@@ -1,0 +1,12 @@
+PACK.md
+PACK-LOG.md
+REPROMPT-*
+HOLD*
+.pack-runner/
+node_modules/
+dist/
+*.tgz
+*.mcpb
+.env*
+*.pem
+.mcpregistry*

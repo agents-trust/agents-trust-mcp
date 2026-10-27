@@ -1,0 +1,60 @@
+{
+  "manifest_version": "0.3",
+  "name": "agents-trust",
+  "display_name": "Agents Trust",
+  "version": "0.1.0",
+  "description": "Find APIs for your task and inspect endpoint evidence.",
+  "author": {
+    "name": "Agents Trust",
+    "url": "https://agents-trust.com"
+  },
+  "license": "MIT",
+  "server": {
+    "type": "node",
+    "entry_point": "dist/index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": [
+        "${__dirname}/dist/index.js"
+      ],
+      "env": {
+        "AGENTS_TRUST_WALLET_PRIVATE_KEY": "${user_config.wallet_key}",
+        "AGENTS_TRUST_MAX_CALL_USDC": "${user_config.max_call_usdc}",
+        "AGENTS_TRUST_SESSION_CAP_USDC": "${user_config.session_cap_usdc}",
+        "AGENTS_TRUST_ENABLE_PAYMENTS": "${user_config.enable_payments}"
+      }
+    }
+  },
+  "compatibility": {
+    "runtimes": {
+      "node": ">=20"
+    }
+  },
+  "user_config": {
+    "wallet_key": {
+      "type": "string",
+      "title": "Wallet private key",
+      "description": "Your Base USDC wallet key; omit for free tools",
+      "sensitive": true,
+      "required": false
+    },
+    "max_call_usdc": {
+      "type": "string",
+      "title": "Maximum fee (USDC)",
+      "description": "Maximum Recommend or Inspect fee",
+      "default": "0.01"
+    },
+    "session_cap_usdc": {
+      "type": "string",
+      "title": "Session cap (USDC)",
+      "description": "Per-process reservation cap",
+      "default": "0.01"
+    },
+    "enable_payments": {
+      "type": "boolean",
+      "title": "Allow one payment authorization",
+      "description": "Owner grant for one authorization per process, including failed or uncertain submissions. Restarting resets this grant. No per-call confirmation.",
+      "default": false
+    }
+  }
+}

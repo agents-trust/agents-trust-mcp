@@ -1,0 +1,50 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "com.agents-trust/recommend",
+  "title": "Agents Trust",
+  "description": "Find APIs and inspect endpoint evidence. Pay with your own Base USDC wallet.",
+  "version": "0.1.1",
+  "websiteUrl": "https://agents-trust.com",
+  "repository": {
+    "url": "https://github.com/agents-trust/agents-trust-mcp",
+    "source": "github"
+  },
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "@agents-trust/mcp",
+      "version": "0.1.1",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "AGENTS_TRUST_ENABLE_PAYMENTS",
+          "description": "Owner opt-in: exactly true allows one payment authorization per server process",
+          "isRequired": false,
+          "default": "false",
+          "format": "string"
+        },
+        {
+          "name": "AGENTS_TRUST_WALLET_PRIVATE_KEY",
+          "description": "Your wallet private key for Base USDC payments",
+          "isRequired": false,
+          "isSecret": true,
+          "format": "string"
+        },
+        {
+          "name": "AGENTS_TRUST_MAX_CALL_USDC",
+          "description": "Maximum Recommend or Inspect fee in USDC",
+          "default": "0.01",
+          "format": "string"
+        },
+        {
+          "name": "AGENTS_TRUST_SESSION_CAP_USDC",
+          "description": "Per-process USDC reservation cap",
+          "default": "0.01",
+          "format": "string"
+        }
+      ]
+    }
+  ]
+}

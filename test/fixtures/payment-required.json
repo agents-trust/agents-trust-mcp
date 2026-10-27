@@ -1,0 +1,96 @@
+{
+  "x402Version": 2,
+  "error": "Payment required",
+  "resource": {
+    "url": "https://api.agents-trust.com/recommend?need=weather%20forecast&view=compact",
+    "description": "Which x402 API should I call? Recommend. Use for: agent API recommendations; find a paid API for my task; compare paid APIs; reliable, callable APIs; trust score; x402 endpoint discovery; API search; x402 marketplace search; pre-payment API verification. Returns URLs, API pricing, paid delivery evidence, risk flags. Weather forecast, web search, stock prices. 0.01 USDC on Base/Solana. Provisional; no endorsement.",
+    "mimeType": "application/json",
+    "serviceName": "Agents Trust API Search",
+    "tags": [
+      "recommendation",
+      "trust",
+      "find paid api",
+      "compare paid APIs",
+      "search x402 endpoints",
+      "API delivery evidence"
+    ]
+  },
+  "accepts": [
+    {
+      "scheme": "exact",
+      "network": "eip155:8453",
+      "amount": "10000",
+      "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+      "payTo": "0x96368628b679a459FE69815bacCa5CB0232AC397",
+      "maxTimeoutSeconds": 300,
+      "extra": {
+        "name": "USD Coin",
+        "version": "2"
+      }
+    },
+    {
+      "scheme": "exact",
+      "network": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp",
+      "amount": "10000",
+      "asset": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "payTo": "79gFPuF6tpqdxPFHuY9xffJXXJgrLBLELai9ft1LJEok",
+      "maxTimeoutSeconds": 300,
+      "extra": {
+        "feePayer": "BENrLoUbndxoNMUS5JXApGMtNykLjFXXixMtpDwDR9SP"
+      }
+    }
+  ],
+  "extensions": {
+    "at-payment-attempt": {
+      "info": {
+        "paymentAttemptId": "01a14143-63c1-73ce-92b3-98b513aaad33",
+        "issuedAt": "2026-10-15T20:31:37.921Z",
+        "expiresAt": "2026-10-15T20:36:37.921Z",
+        "resourceHash": "fe28e88e5c5a8f606f05d983941c642769d6be83ff620d7ab4c49730a8fb5e48",
+        "keyId": "1",
+        "mac": "F1XTZ1eubvxnigPJ-TgDRFuKof3e-g827PPngIU0Yqo"
+      },
+      "schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "paymentAttemptId",
+          "issuedAt",
+          "expiresAt",
+          "resourceHash",
+          "keyId",
+          "mac"
+        ],
+        "properties": {
+          "paymentAttemptId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "issuedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "resourceHash": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "keyId": {
+            "type": "string",
+            "enum": [
+              "1",
+              "2"
+            ]
+          },
+          "mac": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{43}$"
+          }
+        }
+      }
+    }
+  }
+}
